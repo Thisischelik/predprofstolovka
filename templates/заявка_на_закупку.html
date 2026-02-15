@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заявка на закупку</title>
+    <link href="общий.css" rel="stylesheet" type="text/css" />
+    <link href="заявка_на_закупку.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="menu-container">
+        <h1>Создать заявку на продукты</h1>
+        
+        <form action="{{ url_for('submit_purchase_request') }}" method="POST" style="background: white; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0;">
+            <div style="margin-bottom: 20px;">
+                <label>Выберите продукт:</label>
+                <select name="item_name" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
+                    {% for cat, prods in products.items() %}
+                        <optgroup label="{{ cat }}">
+                            {% for p in prods %}
+                                <option value="{{ p.name }}">{{ p.name }} (баланс: {{ p.quantity }} {{ p.unit }})</option>
+                            {% endfor %}
+                        </optgroup>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label>Количество:</label>
+                <input type="number" name="quantity" step="0.1" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label>Ориентировочная цена за ед.:</label>
+                <input type="number" name="price" step="0.01" required style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Отправить на согласование</button>
+        </form>
+
+        <div style="margin-top: 30px;">
+            <a href="{{ url_for('chef_menu') }}" class="back-link">← Вернуться в меню</a>
+        </div>
+    </div>
+</body>
+</html>

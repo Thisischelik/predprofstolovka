@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель администратора</title>
+    <link href="общий.css" rel="stylesheet" type="text/css" />
+    <link href="меню_админ.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="menu-container">
+        <div class="header">
+            <h1>Панель администратора</h1>
+            <p>Добро пожаловать, {{ user.username }}</p>
+        </div>
+
+        <div class="nav-grid">
+            <a href="{{ url_for('approve_request') }}" class="nav-item">
+                <div class="icon">📋</div>
+                <div class="label">Согласование заявок</div>
+            </a>
+            
+            <a href="{{ url_for('meals_accounting') }}" class="nav-item">
+                <div class="icon">📊</div>
+                <div class="label">Учет питания</div>
+            </a>
+            
+            <a href="{{ url_for('reports') }}" class="nav-item">
+                <div class="icon">📈</div>
+                <div class="label">Отчеты и затраты</div>
+            </a>
+            
+            <a href="{{ url_for('feedbacks') }}" class="nav-item">
+                <div class="icon">💬</div>
+                <div class="label">Отзывы</div>
+            </a>
+        </div>
+
+        <div style="margin-top: 40px; text-align: center;">
+            <a href="{{ url_for('index') }}" class="back-link">Выйти из системы</a>
+        </div>
+    </div>
+</body>
+</html>

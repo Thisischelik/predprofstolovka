@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Журнал заказов</title>
+    <link href="общий.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="menu-container">
+        <h1>Журнал выдачи питания</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Время заказа</th>
+                    <th>Ученик / Класс</th>
+                    <th>Тип питания</th>
+                    <th>Аллергии / Пожелания</th>
+                    <th>Статус выдачи</th>
+                    <th>Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                {% set student = students.get(order.user_id) %}
+                <tr>
+                    <td>{{ order.timestamp.strftime('%d.%m.%Y %H:%M') if order.timestamp else '---' }}</td>
+                    <td><b>{{ student.username if student else order.user_name }}</b><br><small>ID: {{ order.user_id }} {{ '(' ~ student.classes ~ ')' if student else '' }}</small></td>
+                    <td>{{ order.meal_type }}</td>
+                    <td>
+                        {% if student %}
+                            {% if student.allergy %}
+                                <div style="color: #d63031; font-weight: bold; font-size: 0.85em;">⚠️ {{ student.allergy }}</div>
+                            {% endif %}
+                            {% if student.preferences %}
+                                <div style="color: #27ae60; font-style: italic; font-size: 0.85em;">💬 {{ student.preferences }}</div>
+                            {% endif %}
+                            {% if not student.allergy and not student.preferences %}
+                                <span style="color: #999;">---</span>
+                            {% endif %}
+                        {% else %}
+                            <span style="color: #999;">---</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="{{ 'text-success' if order.is_issued else 'text-danger' }}" style="font-weight: bold;">
+                            {{ 'Выдано' if order.is_issued else 'Не выдано' }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if not order.is_issued and session.get('role') == 'chef' %}
+                        <form action="{{ url_for('issue_meal', order_id=order.id) }}" method="POST">
+                            <button type="submit" class="btn" style="padding: 5px 10px; font-size: 0.8em; margin: 0;">Выдать</button>
+                        </form>
+                        {% elif order.is_issued %}
+                        👌
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                {% if not orders %}
+                <tr>
+                    <td colspan="6" style="text-align: center;">Записей пока нет</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        
+        <div style="margin-top: 30px;">
+            {% if session.get('role') == 'admin' %}
+                <a href="{{ url_for('admin_menu') }}" class="back-link">← В панель администратора</a>
+            {% else %}
+                <a href="{{ url_for('chef_menu') }}" class="back-link">← В меню повара</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

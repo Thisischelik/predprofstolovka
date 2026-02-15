@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройки профиля</title>
+    <link href="общий.css" rel="stylesheet" type="text/css" />
+    <link href="настройки_профиля.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="menu-container">
+        <h1>Личные настройки</h1>
+        
+        <div style="background: white; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 20px;">
+            <h3>Информация о пользователе</h3>
+            <p><strong>ID:</strong> {{ user.id }}</p>
+            <p><strong>Имя/ФИО:</strong> {{ user.fio or user.username }}</p>
+            {% if user.classes %}
+                <p><strong>Класс:</strong> {{ user.classes }}</p>
+            {% endif %}
+        </div>
+
+        <div style="background: white; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0;">
+            <h3>Изменить данные</h3>
+            <p style="color: #64748b; font-size: 0.9em;">(Здесь может быть форма смены пароля или предпочтений)</p>
+        </div>
+
+        <div style="margin-top: 30px;">
+            {% if session.get('role') == 'student' %}
+                <a href="{{ url_for('student_menu') }}" class="back-link">← Вернуться в меню</a>
+            {% elif session.get('role') == 'chef' %}
+                <a href="{{ url_for('chef_menu') }}" class="back-link">← Вернуться в меню</a>
+            {% else %}
+                <a href="{{ url_for('admin_menu') }}" class="back-link">← Вернуться в меню</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

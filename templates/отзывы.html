@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отзывы</title>
+    <link href="общий.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="menu-container">
+        <h1>Отзывы о нашей столовой</h1>
+
+        {% if user %}
+        <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+            <h3>Оставить отзыв</h3>
+            <form action="{{ url_for('reviews') }}" method="POST">
+                <textarea name="text" placeholder="Напишите ваше мнение..." required 
+                          style="width: 100%; height: 100px; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+                <button type="submit" class="btn">Отправить отзыв</button>
+            </form>
+        </div>
+        {% else %}
+        <p>Чтобы оставить отзыв, пожалуйста, <a href="{{ url_for('index') }}">войдите</a>.</p>
+        {% endif %}
+
+        <div class="feedback-list">
+            {% for fb in feedbacks %}
+            <div style="border-bottom: 1px solid #eee; padding: 15px 0;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <strong>{{ fb.user_fio }} ({{ fb.user_role }})</strong>
+                    <small style="color: #888;">{{ fb.timestamp.strftime('%d.%m.%Y %H:%M') }}</small>
+                </div>
+                <p style="margin: 0;">{{ fb.text }}</p>
+            </div>
+            {% endfor %}
+            {% if not feedbacks %}
+            <p>Отзывов пока нет. Будьте первым!</p>
+            {% endif %}
+        </div>
+
+        <div style="margin-top: 30px;">
+            {% if session.get('role') == 'admin' %}
+                <a href="{{ url_for('admin_menu') }}" class="back-link">← В меню</a>
+            {% elif session.get('role') == 'chef' %}
+                <a href="{{ url_for('chef_menu') }}" class="back-link">← В меню</a>
+            {% elif session.get('role') == 'student' %}
+                <a href="{{ url_for('student_menu') }}" class="back-link">← В меню</a>
+            {% else %}
+                <a href="{{ url_for('index') }}" class="back-link">← На главную</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

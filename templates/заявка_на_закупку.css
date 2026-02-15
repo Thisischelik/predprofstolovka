@@ -1,0 +1,251 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: #f1f5f9;
+    min-height: 100vh;
+}
+
+h3 {
+    text-align: center;
+    color: rgb(11, 10, 10);
+    font-size: 36px;
+    margin: 40px 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.form-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 900px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.full-sentence-row {
+    margin: 20px 0;
+    line-height: 2;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.sentence-part {
+    display: inline;
+    margin-right: 10px;
+}
+
+.sentence-input {
+    padding: 8px 12px;
+    border: 2px solid #2563eb;
+    border-radius: 8px;
+    font-size: 14px;
+    margin: 0 5px;
+}
+
+.sentence-input.small {
+    width: 60px;
+}
+
+.sentence-input.medium {
+    width: 120px;
+}
+
+.contract-text-block {
+    margin-top: 15px;
+    line-height: 1.6;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.form-label {
+    font-weight: bold;
+    white-space: nowrap;
+    margin-right: 15px;
+    min-width: 160px;
+    color: #2c3e50;
+}
+
+.form-input {
+    padding: 10px 15px;
+    border: 2px solid #2563eb;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 300px;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(118, 75, 162, 0.3);
+}
+
+.date-group {
+    display: flex;
+    align-items: center;
+}
+
+.date-label {
+    font-weight: bold;
+    white-space: nowrap;
+    margin-right: 15px;
+    min-width: 160px;
+    color: #2c3e50;
+}
+
+.date-input {
+    padding: 10px 15px;
+    border: 2px solid #2563eb;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 180px;
+    margin-right: 10px;
+}
+
+.delivery-date-group {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.delivery-date-label {
+    font-weight: bold;
+    white-space: nowrap;
+    margin-right: 15px;
+    min-width: 160px;
+    color: #2c3e50;
+}
+
+.delivery-date-input {
+    padding: 10px 15px;
+    border: 2px solid #2563eb;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 180px;
+    margin-right: 10px;
+}
+
+.delivery-terms-row {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.delivery-terms-label {
+    font-weight: bold;
+    white-space: nowrap;
+    margin-right: 15px;
+    min-width: 160px;
+    color: #2c3e50;
+}
+
+.delivery-terms-input {
+    padding: 10px 15px;
+    border: 2px solid #2563eb;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 350px;
+}
+
+.notes-row {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.notes-label {
+    font-weight: bold;
+    white-space: nowrap;
+    margin-right: 15px;
+    min-width: 160px;
+    color: #2c3e50;
+}
+
+.notes-input {
+    padding: 10px 15px;
+    border: 2px solid #2563eb;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 350px;
+}
+
+.city-row {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.city-input {
+    padding: 10px 15px;
+    border: 2px solid #2563eb;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 220px;
+    margin-right: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+th {
+    background: #f1f5f9;
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-weight: bold;
+}
+
+td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+.submit-button {
+    background-color: white;
+    border: 2px solid #2ecc71;
+    color: #2ecc71;
+    padding: 12px 30px;
+    margin: 30px auto 0;
+    display: block;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 250px;
+}
+
+.submit-button:hover {
+    background-color: #2ecc71;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+}

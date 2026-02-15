@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Выбор роли — Система питания</title>
+    <link href="вход.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="login-card">
+        <h1>Вход</h1>
+        <h3>Выберите роль</h3>
+        
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;">
+            <a href="{{ url_for('logst') }}" class="role-btn">
+                <span style="margin-right: 10px;">🎓</span> Ученик
+            </a>
+            
+            <a href="{{ url_for('logch') }}" class="role-btn">
+                <span style="margin-right: 10px;">👨‍🍳</span> Повар
+            </a>
+            
+            <a href="{{ url_for('logad') }}" class="role-btn">
+                <span style="margin-right: 10px;">🔑</span> Администратор
+            </a>
+        </div>
+    </div>
+</body>
+    
+    <style>
+        .role-btn:hover {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .secondary-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</body>
+</html>

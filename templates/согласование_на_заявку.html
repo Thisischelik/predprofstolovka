@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Согласование заявок</title>
+    <link href="общий.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="menu-container">
+        <h1>Согласование заявок на закупку</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Товар</th>
+                    <th>Кол-во</th>
+                    <th>Сумма</th>
+                    <th>Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for req in requests %}
+                <tr>
+                    <td>{{ req.item_name }}</td>
+                    <td>{{ req.quantity }}</td>
+                    <td>{{ req.price }} руб.</td>
+                    <td>
+                        <a href="{{ url_for('approve_purchase_request', req_id=req.id) }}" class="btn-success" style="padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 0.9em; display: inline-block; margin-bottom: 5px;">Одобрить</a>
+                        <a href="{{ url_for('reject_purchase_request', req_id=req.id) }}" class="btn-danger" style="padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 0.9em; display: inline-block;">Отклонить</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% if not requests %}
+                <tr>
+                    <td colspan="4">Нет новых заявок для согласования</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        <div style="margin-top: 30px;">
+            <a href="{{ url_for('admin_menu') }}" class="back-link">← Вернуться в панель</a>
+        </div>
+    </div>
+</body>
+</html>

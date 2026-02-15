@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Меню ученика</title>
+    <link href="общий.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+            <div class="flash-item flash-{{ 'success' if category == 'success' else 'error' if category == 'error' else 'info' }}">
+              {{ message }}
+              <span style="cursor:pointer;margin-left:10px;" onclick="this.parentElement.remove()">×</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% if user %}
+    <div class="user-panel">
+        <div>
+            <strong>ID:</strong> {{ user.id }} | 
+            <strong>Логин:</strong> {{ user.username }} |
+            <strong>ФИО:</strong> {{ user.fio }} | 
+            <a href="{{ url_for('payment') }}" style="color: #38bdf8; text-decoration: underline; margin: 0; padding: 0; display: inline; background: none;">
+                <strong>Баланс:</strong> {{ user.balance or 0.0 }} руб.
+            </a>
+        </div>
+        <div>
+            <a href="{{ url_for('profile_settings') }}">Профиль</a>
+            <a href="{{ url_for('logout') }}" style="color: #e74c3c;">Выход</a>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="menu-container">
+        <h1>Меню ученика</h1>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 30px;">
+            <a href="{{ url_for('purchase_meals') }}" class="btn btn-primary" style="margin: 0; background: #6c5ce7;">🍽 Купить питание</a>
+            <a href="{{ url_for('payment') }}" class="btn btn-primary" style="margin: 0;">💳 Пополнение и карты</a>
+            <a href="{{ url_for('reviews') }}" class="btn btn-secondary" style="margin: 0;">💬 Отзывы</a>
+            <a href="{{ url_for('support') }}" class="btn btn-secondary" style="margin: 0;">🛠 Поддержка</a>
+        </div>
+
+        <hr>
+        <h2>Мои оплаченные заказы</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Тип</th>
+                    <th>Статус</th>
+                    <th>Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.timestamp.strftime('%d.%m.%Y %H:%M') if order.timestamp else '---' }}</td>
+                    <td>{{ order.meal_type }}</td>
+                    <td>
+                        <span class="{{ 'text-success' if order.is_issued else 'text-warning' }}">
+                            {{ 'Получено' if order.is_issued else 'Оплачено' }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if not order.is_issued %}
+                            <a href="{{ url_for('claim_meal', order_id=order.id) }}" class="btn" style="width: auto; margin: 0; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 0.8em; background: #00b894; color: white; display: inline-block;">Подтвердить</a>
+                        {% else %}
+                            👌
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                {% if not orders %}
+                <tr>
+                    <td colspan="4">У вас пока нет активных заказов</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

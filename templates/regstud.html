@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="вход.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+            <div class="flash-item flash-{{ 'success' if category == 'success' else 'error' }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    <div class="login-card">
+        <h1>Регистрация</h1>
+        <div class="role-badge">Ученик</div>
+        <form method="POST">
+            <input name="username" type="text" placeholder="Придумайте логин (англ. или цифры)" required>
+            <input name="fio" type="text" placeholder="Ваше ФИО" required>
+            <input name="classes" type="text" placeholder="Класс (напр. 10А)" required>
+            <input name="password" type="password" placeholder="Придумайте пароль" required>
+            <button type="submit" class="btn-primary">Зарегистрироваться</button>
+        </form>
+        <a href="{{ url_for('logst') }}" class="secondary-link">Уже есть аккаунт? Войти</a>
+    </div>
+</body>
+</html>

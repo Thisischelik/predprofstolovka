@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель повара</title>
+    <link href="общий.css" rel="stylesheet" type="text/css" />
+    <link href="меню_повар.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="menu-container">
+        <div class="header">
+            <h1>Панель повара</h1>
+            <p>Добро пожаловать, {{ user.username }}</p>
+        </div>
+
+        <div class="nav-grid">
+            <a href="{{ url_for('purchase_request') }}" class="nav-item">
+                <div class="icon">🛒</div>
+                <div class="label">Заявка на закупку</div>
+            </a>
+            
+            <a href="{{ url_for('products_accounting') }}" class="nav-item">
+                <div class="icon">📦</div>
+                <div class="label">Учет продуктов</div>
+            </a>
+            
+            <a href="{{ url_for('meals_accounting') }}" class="nav-item">
+                <div class="icon">🍽️</div>
+                <div class="label">Учет выдачи блюд</div>
+            </a>
+
+            <a href="{{ url_for('feedbacks') }}" class="nav-item">
+                <div class="icon">💬</div>
+                <div class="label">Отзывы</div>
+            </a>
+        </div>
+
+        {% if requests %}
+        <div style="margin-top: 30px; background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+            <h3>Ваши последние заявки</h3>
+            <ul style="list-style: none; padding: 0;">
+                {% for req in requests[-5:] %}
+                <li style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between;">
+                    <span>{{ req.item_name }} ({{ req.quantity }})</span>
+                    <span class="status-{{ req.status.lower() }}">{{ req.status }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <div style="margin-top: 40px; text-align: center;">
+            <a href="{{ url_for('index') }}" class="back-link">Выйти из системы</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оплата и пополнение</title>
+    <link href="общий.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+            <div class="flash-item flash-{{ 'success' if category == 'success' else 'error' if category == 'error' else 'info' }}">
+              {{ message }}
+              <span style="cursor:pointer;margin-left:10px;" onclick="this.parentElement.remove()">×</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="menu-container">
+        <h1>Пополнение баланса и управление картами</h1>
+        
+        {% if user %}
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+            <div style="background: white; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                <h3 style="margin-top: 0; color: #1e293b; font-size: 1.1em;">Личный счет</h3>
+                <div style="font-size: 2.2em; font-weight: 700; color: #2563eb; margin-bottom: 20px;">
+                    {{ user.balance or 0.0 }} <span style="font-size: 0.5em; color: #64748b; font-weight: normal;">RUB</span>
+                </div>
+                
+                <form action="{{ url_for('add_balance') }}" method="POST" style="display: flex; flex-direction: column; gap: 12px;">
+                    {% if cards %}
+                        <label style="font-size: 0.9em; color: #64748b;">Выберите способ оплаты:</label>
+                        <select name="card_id" style="padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
+                            {% for card in cards %}
+                                <option value="{{ card.id }}">Saved: {{ card.get_masked_number() }}</option>
+                            {% endfor %}
+                        </select>
+                        
+                        <input type="number" name="amount" placeholder="Сумма (₽)" required min="1" step="0.01" style="padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
+                        <input type="password" name="password" placeholder="Пароль для подтверждения" required style="padding: 10px; border-radius: 8px; border: 1px solid #ddd;">
+                        <button type="submit" class="btn btn-success" style="width: 100%; margin: 5px 0;">🚀 Пополнить</button>
+                    {% else %}
+                        <div style="background: #fff9db; border: 1px solid #fab005; padding: 15px; border-radius: 8px; font-size: 0.9em; color: #856404; text-align: center;">
+                            ⚠️ Для пополнения счета необходимо <br><b>привязать банковскую карту</b> в правой колонке.
+                        </div>
+                        <button type="button" class="btn" disabled style="width: 100%; margin: 10px 0; background: #e9ecef; color: #adb5bd; cursor: not-allowed;">🚀 Пополнить (недоступно)</button>
+                    {% endif %}
+                </form>
+            </div>
+
+            <div style="background: #f8fafc; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                <h3 style="margin-top: 0; color: #1e293b; font-size: 1.1em;">Сохраненные карты</h3>
+                
+                <div style="max-height: 200px; overflow-y: auto; margin-bottom: 20px;">
+                    {% for card in cards %}
+                    <div style="background: white; padding: 10px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="display: block; font-weight: 600;">{{ card.get_masked_number() }}</span>
+                            <small style="color: #64748b;">{{ card.card_holder }} | {{ card.get_decrypted_expiry() }}</small>
+                        </div>
+                        <form action="{{ url_for('delete_card', card_id=card.id) }}" method="POST" onsubmit="return confirm('Удалить карту?');">
+                            <button type="submit" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.2em;">&times;</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                    {% if not cards %}
+                        <p style="color: #64748b; font-size: 0.9em; text-align: center; margin-top: 20px;">У вас еще нет сохраненных карт.</p>
+                    {% endif %}
+                </div>
+
+                <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 15px 0;">
+
+                <form action="{{ url_for('add_card') }}" method="POST" style="display: grid; gap: 8px;">
+                    <input type="text" name="card_number" placeholder="Номер карты (16 цифр)" pattern="\d{16}" title="Введите 16 цифр номера карты" maxlength="16" required style="padding: 8px; border-radius: 6px; border: 1px solid #ddd;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <input type="text" name="expiry" placeholder="ММ/ГГ" pattern="(0[1-9]|1[0-2])\/\d{2}" title="Формат ММ/ГГ" maxlength="5" required style="padding: 8px; border-radius: 6px; border: 1px solid #ddd;">
+                        <input type="password" name="cvv" placeholder="CVV" pattern="\d{3}" title="3 цифры на обороте" maxlength="3" required style="padding: 8px; border-radius: 6px; border: 1px solid #ddd;">
+                    </div>
+                    <input type="text" name="card_holder" placeholder="ИМЯ ВЛАДЕЛЬЦА (КАК НА КАРТЕ)" pattern="[A-Za-zА-Яа-яЁё\s]+" title="Введите имя владельца (латиницей или кириллицей)" required style="padding: 8px; border-radius: 6px; border: 1px solid #ddd; text-transform: uppercase;">
+                    <button type="submit" class="btn btn-secondary" style="margin: 0; font-size: 0.9em;">➕ Привязать карту</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+
+        <div style="margin-top: 30px;">
+            <a href="{{ url_for('student_menu') }}" class="back-link">← Вернуться в меню</a>
+        </div>
+
+        {% if transactions %}
+        <div style="margin-top: 40px; background: white; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0;">
+            <h3 style="margin-top: 0; color: #1e293b; font-size: 1.1em;">Последние операции</h3>
+            <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #f1f5f9; text-align: left;">
+                        <th style="padding: 10px; color: #64748b;">Дата</th>
+                        <th style="padding: 10px; color: #64748b;">Тип</th>
+                        <th style="padding: 10px; color: #64748b;">Источник</th>
+                        <th style="padding: 10px; color: #64748b; text-align: right;">Сумма</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tx in transactions %}
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 10px; color: #475569;">{{ tx.timestamp.strftime('%d.%m %H:%M') }}</td>
+                        <td style="padding: 10px;">
+                            <span class="{{ 'badge-pos' if tx.type == 'Пополнение' else 'badge-neg' }}">
+                                {{ tx.type }}
+                            </span>
+                        </td>
+                        <td style="padding: 10px; color: #64748b;">{{ tx.card_used }}</td>
+                        <td style="padding: 10px; text-align: right;" class="{{ 'tx-amount-pos' if tx.type == 'Пополнение' else 'tx-amount-neg' }}">
+                            {{ '+' if tx.type == 'Пополнение' else '-' }}{{ tx.amount }} ₽
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

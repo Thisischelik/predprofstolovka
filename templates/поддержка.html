@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поддержка</title>
+    <link href="общий.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="menu-container">
+        <h1>Служба поддержки</h1>
+        
+        <div style="text-align: left; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+            <h3>Часто задаваемые вопросы</h3>
+            <div style="margin-bottom: 20px;">
+                <p><strong>Как пополнить баланс?</strong><br>
+                Перейдите в раздел "Оплата", введите сумму и нажмите "Пополнить".</p>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <p><strong>Как заказать обед?</strong><br>
+                В меню ученика нажмите кнопку "Купить" рядом с нужной позицией. После покупки не забудьте нажать "Отметить получение" в столовой.</p>
+            </div>
+            
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+            
+            <h3>Контакты</h3>
+            <p><strong>Email:</strong> support@school-stolovka.ru</p>
+            <p><strong>Телефон:</strong> +7 (999) 999-99-99</p>
+            <p><strong>Режим работы:</strong> Пн-Пт, 08:00 - 17:00</p>
+        </div>
+
+        <div style="margin-top: 30px;">
+            {% if session.get('role') == 'admin' %}
+                <a href="{{ url_for('admin_menu') }}" class="back-link">← В меню</a>
+            {% elif session.get('role') == 'chef' %}
+                <a href="{{ url_for('chef_menu') }}" class="back-link">← В меню</a>
+            {% elif session.get('role') == 'student' %}
+                <a href="{{ url_for('student_menu') }}" class="back-link">← В меню</a>
+            {% else %}
+                <a href="{{ url_for('index') }}" class="back-link">← На главную</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
