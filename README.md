@@ -40,3 +40,5 @@
 - **Администратор:** admin / admin123
 - **Повар:** chef / chef123
 - **Ученик:** student / student123
+
+## Ссылка на видео: https://vkvideo.ru/video-235881907_456239017?list=ln-bA6l4XDuSTSZ2RK0yz
